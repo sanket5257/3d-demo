@@ -324,7 +324,7 @@ export default function Experience() {
 
         <div className="absolute inset-0 transition-opacity duration-500" style={{ opacity: lifted ? 0 : 1 }}>
           <div className="absolute inset-x-0 top-0 flex justify-between px-6 md:px-10 py-7 text-[11px] tracking-[0.3em] uppercase text-white/40">
-            <span className="font-[family-name:var(--ij-serif)] text-xl italic normal-case tracking-normal text-white/80">Iustitia</span>
+            <span className="font-[family-name:var(--ij-serif)] text-xl normal-case tracking-[-0.02em] text-white/80">Iustitia</span>
             <span>Exhibit Nº 001</span>
           </div>
 
@@ -352,7 +352,7 @@ export default function Experience() {
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between px-6 md:px-10 pb-8">
             <p className="max-w-[16rem] text-[11px] leading-relaxed tracking-[0.3em] uppercase text-white/40">Weighing the stone</p>
             <div className="text-right">
-              <span ref={countRef} className="block font-[family-name:var(--ij-serif)] text-6xl md:text-7xl italic leading-none tabular-nums">000</span>
+              <span ref={countRef} className="block font-[family-name:var(--ij-serif)] text-6xl md:text-7xl leading-none tabular-nums">000</span>
               <span className="mt-3 ml-auto block h-px w-32 bg-white/15">
                 <span ref={barRef} className="block h-full w-full origin-left bg-[#ece8e1]" style={{ transform: 'scaleX(0)' }} />
               </span>
@@ -364,7 +364,7 @@ export default function Experience() {
       {/* ---------- fixed layers ---------- */}
       <div className="ij-title pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden">
         <h1
-          className="font-[family-name:var(--ij-serif)] text-[26vw] leading-none tracking-[-0.04em] text-[#3a3631] transition-all duration-[1600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+          className="font-[family-name:var(--ij-serif)] text-[21vw] leading-none tracking-[-0.05em] text-[#3a3631] transition-all duration-[1600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{ transform: lifted ? 'translateY(-4vh)' : 'translateY(14vh)', opacity: lifted ? 1 : 0, transitionDelay: '200ms' }}
         >
           Iustitia
@@ -401,30 +401,30 @@ export default function Experience() {
       <div aria-hidden className="lg-edge pointer-events-none fixed inset-x-0 top-0 z-40 h-28" />
 
       {/* controls & navigation: the only things made of glass */}
-      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-4 px-4 md:px-8 pt-4 text-[11px] tracking-[0.24em] uppercase">
-        <a href="#hero" className="lg lg-i px-5 py-2.5 font-[family-name:var(--ij-serif)] text-lg normal-case tracking-normal italic leading-none">
+      <header className="fixed inset-x-0 top-0 z-50 mix-blend-difference flex items-center justify-between gap-4 px-6 md:px-10 pt-6 text-[11px] tracking-[0.24em] uppercase">
+        <a href="#hero" className="lg lg-i relative font-[family-name:var(--ij-serif)] text-xl normal-case tracking-normal leading-none">
           Iustitia
         </a>
-        <nav ref={navRef} className="lg hidden md:flex items-center p-1.5 text-white/55">
+        <nav ref={navRef} className="relative hidden md:flex items-center gap-8 text-white/55">
           <span ref={navThumbRef} aria-hidden className="lg-thumb opacity-0" />
           {CHAPTERS.map((c, i) => (
             <a
               key={c.id}
               href={`#${c.id}`}
               data-active={chapter === i + 1}
-              className={`lg-i relative z-[1] rounded-full px-4 py-2 transition-colors duration-500 hover:text-white ${chapter === i + 1 ? 'text-white' : ''}`}
+              className={`lg-i relative z-[1] pb-1 transition-colors duration-500 hover:text-white ${chapter === i + 1 ? 'text-white' : ''}`}
             >
               {c.num}. {c.title}
             </a>
           ))}
         </nav>
-        <a href="/car" className="lg lg-i px-5 py-3 text-white/85 hover:text-white">
+        <a href="/car" className="lg lg-i relative pb-1 text-white/85 hover:text-white">
           Next exhibit →
         </a>
       </header>
       <div className="pointer-events-none fixed bottom-0 inset-x-0 z-50 flex items-end justify-between px-6 md:px-10 pb-6 text-[11px] tracking-[0.3em] uppercase text-white/45">
         <span>Real-time · WebGL</span>
-        <span className="lg px-4 py-2 font-[family-name:var(--ij-serif)] text-base tracking-normal normal-case text-white/85 tabular-nums">
+        <span className="relative font-[family-name:var(--ij-serif)] text-lg tracking-normal normal-case text-white/85 tabular-nums">
           {String(chapter).padStart(2, '0')} <span className="text-white/35">/ 08</span>
         </span>
       </div>
@@ -482,14 +482,14 @@ export default function Experience() {
             <h2 className="mt-5 max-w-[12ch] font-[family-name:var(--ij-serif)] text-[2.6rem] md:text-[4.2rem] leading-[1.02] tracking-[-0.02em]">
               Same form. <em className="text-white/55">Four fates.</em>
             </h2>
-            <div ref={matRef} className="lg relative mt-10 grid max-w-md grid-cols-2 gap-1 !rounded-[30px] p-1.5" role="group" aria-label="Choose the material">
+            <div ref={matRef} className="relative mt-10 grid max-w-md grid-cols-1 border-t border-white/15" role="group" aria-label="Choose the material">
               <span ref={matThumbRef} aria-hidden className="lg-thumb !rounded-[24px] opacity-0" />
               {MATERIALS.map((m) => (
                 <button
                   key={m.key}
                   onClick={() => pickMaterial(m.key)}
                   aria-pressed={material === m.key}
-                  className="group lg-i relative z-[1] flex items-center gap-3 !rounded-[24px] px-3 py-3 text-left"
+                  className="group lg-i relative z-[1] flex items-center gap-4 border-b border-white/15 py-4 text-left transition-opacity hover:opacity-100 aria-[pressed=false]:opacity-50"
                 >
                   <span className="h-9 w-9 shrink-0 rounded-full ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-110" style={{ background: m.swatch }} />
                   <span>
@@ -508,7 +508,7 @@ export default function Experience() {
             <p className="mt-4 font-[family-name:var(--ij-serif)] text-3xl md:text-[2.6rem] leading-tight">
               Drag to turn her. <em className="text-white/55">Let go, she settles.</em>
             </p>
-            <span className="lg mt-6 inline-flex items-center gap-4 px-6 py-3 text-[11px] tracking-[0.3em] uppercase text-white/75">
+            <span className="relative mt-6 inline-flex items-center gap-4 text-[11px] tracking-[0.3em] uppercase text-white/75">
               <span aria-hidden>⟵</span> Drag <span aria-hidden>⟶</span>
             </span>
           </div>
@@ -537,7 +537,7 @@ export default function Experience() {
               </p>
               <a
                 href="mailto:hello@example.com?subject=A%20real-time%203D%20piece"
-                className="group lg lg-i inline-flex items-center gap-4 px-8 py-5 text-sm text-white"
+                className="group lg-i relative inline-flex items-center gap-4 pb-2 font-[family-name:var(--ij-serif)] text-3xl md:text-5xl text-white"
               >
                 Commission a 3D piece
                 <span className="inline-block transition-transform duration-500 group-hover:translate-x-1">→</span>

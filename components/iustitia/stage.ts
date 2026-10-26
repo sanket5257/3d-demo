@@ -22,7 +22,7 @@ export type MaterialName = 'marble' | 'bronze' | 'obsidian' | 'verdigris'
 
 /** Named points on the sculpture (glTF space) for the HTML annotations. */
 export const ANCHORS = {
-  blindfold: [0.08, 0.07, 0.125],
+  blindfold: [0.075, 0.032, 0.132],
   scales: [-0.3, -0.47, 0.3],
   sword: [0.32, -0.95, -0.02],
   drapery: [-0.22, -1.12, -0.05],
