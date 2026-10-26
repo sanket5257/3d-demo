@@ -1,0 +1,129 @@
+/* ------------------------------------------------------------------
+ * Liquid Glass, after Apple's material:
+ *  - a functional layer for controls & navigation only (never content)
+ *  - blurs what's behind, picks up its colour and light (saturation)
+ *  - lensing: the backdrop bends at the rim, stays true in the middle
+ *  - specular highlight follows the pointer; press = gel-like flex
+ *  - capsules by default, rounded rects for larger panels
+ *  - variants: regular (.lg) and clear (.lg-clear)
+ * Lensing uses #lg-lens (SVG displacement from an edge map). Browsers that
+ * reject url() inside backdrop-filter drop that line and keep the frosted one.
+ * ------------------------------------------------------------------ */
+.lg,
+.lg-clear {
+  position: relative;
+  isolation: isolate;
+  border-radius: 999px;
+  --lg-mx: 50%;
+  --lg-my: 0%;
+  --lg-hi: 0;
+}
+.lg {
+  background: rgba(255, 255, 255, 0.07);
+  -webkit-backdrop-filter: blur(12px) saturate(180%) brightness(1.1);
+  backdrop-filter: blur(12px) saturate(180%) brightness(1.1);
+  backdrop-filter: url(#lg-lens) blur(9px) saturate(180%) brightness(1.1);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.12),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.12),
+    inset 0 0 18px rgba(255, 255, 255, 0.06),
+    0 8px 32px -6px rgba(0, 0, 0, 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+}
+/* clear variant: far more transparent, light dimming keeps text legible */
+.lg-clear {
+  background: rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: blur(3px) saturate(200%) brightness(1.05);
+  backdrop-filter: blur(3px) saturate(200%) brightness(1.05);
+  backdrop-filter: url(#lg-lens) blur(2px) saturate(200%) brightness(1.05);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.15),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.18),
+    0 6px 24px -6px rgba(0, 0, 0, 0.45);
+}
+/* rim light: brightest along the top-left, catching the key light */
+.lg::after,
+.lg-clear::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.08) 30%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, 0.25));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.8;
+}
+/* specular highlight under the pointer (interactive glass only) */
+.lg-i::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(70% 140% at var(--lg-mx) var(--lg-my), rgba(255, 255, 255, 0.28), transparent 60%);
+  opacity: var(--lg-hi);
+  transition: opacity 0.4s ease;
+}
+.lg-i {
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+.lg-i:hover { --lg-hi: 1; }
+/* gel flex: swells slightly under the finger, settles with a spring */
+.lg-i:active { transform: scale(1.06, 0.96); transition-duration: 0.18s; }
+
+/* sliding glass thumb inside a glass container (morphs between options) */
+.lg-thumb {
+  position: absolute;
+  z-index: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.15),
+    0 4px 14px -4px rgba(0, 0, 0, 0.45);
+  transition:
+    left 0.6s cubic-bezier(0.34, 1.3, 0.64, 1),
+    top 0.6s cubic-bezier(0.34, 1.3, 0.64, 1),
+    width 0.6s cubic-bezier(0.34, 1.3, 0.64, 1),
+    height 0.6s cubic-bezier(0.34, 1.3, 0.64, 1),
+    opacity 0.4s;
+  pointer-events: none;
+}
+.lg-thumb.is-moving { animation: lg-stretch 0.6s cubic-bezier(0.34, 1.3, 0.64, 1); }
+@keyframes lg-stretch {
+  0% { transform: scale(1, 1); }
+  35% { transform: scale(1.12, 0.86); }
+  100% { transform: scale(1, 1); }
+}
+
+/* scroll edge effect: content softens as it passes under the top bar */
+.lg-edge {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-mask: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+  mask: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .lg, .lg-clear { background: rgba(28, 28, 30, 0.92); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lg-i, .lg-thumb { transition: none; }
+  .lg-thumb.is-moving { animation: none; }
+}
+
+/* loader: fine lines draw themselves in */
+.ij-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ij-draw 1.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+@keyframes ij-draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .ij-draw { animation: none; stroke-dashoffset: 0; } }
